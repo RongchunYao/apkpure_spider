@@ -6,10 +6,11 @@ import os
 def spi(my_proxy,keywd,headers):
 	print "[start] apkpure keywd="+keywd
 	success_list=[]
-	with open('./apkpure/'+keywd+'.txt','w+') as file:
+	with open('./apkpure/'+keywd+'.txt','a+') as file:
 		success_list=file.read()
 	file.close()
 	success_list=success_list.split('\n')
+	print success_list
 	pattern =re.compile(r'<span>(\d+)</span>\ search\ results',re.S)
 	dw_pattern = re.compile(r'<a\ id="download_link".*?href="(.*?)">',re.S)	
 	list_pattern = re.compile(r'<dt><a\ title="(.*?)".*?href="(.*?)">',re.S)
@@ -56,7 +57,8 @@ def spi(my_proxy,keywd,headers):
 	count =0	
 	for i in download_url:
 		print download_url[i]
-		if download_url[i] in success_list:
+		if i in success_list:
+			download_url[i]=None
 			continue
 		try:
 			content=requests.get(download_url[i],proxies=my_proxy,timeout=5,headers=headers).content
