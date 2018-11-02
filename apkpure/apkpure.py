@@ -31,7 +31,7 @@ def spi(my_proxy,keywd,headers):
 
 #############################################################
 #modify to change the num of pages of apps u want to download 
-	nr_time=1
+	nr_time=5
 
 #############################################################
 
@@ -96,10 +96,13 @@ def spi(my_proxy,keywd,headers):
 			continue
 		if os.path.isdir('./apkpure/apk/'+keywd) is False:
 			os.makedirs('./apkpure/apk/'+keywd)
-		with open('./apkpure/apk/'+keywd+'/'+item+'.apk',"wb") as file:
-			for chunk in apk.iter_content(chunk_size=1024):
-				if chunk:
-					file.write(chunk)
+		try:
+			with open('./apkpure/apk/'+keywd+'/'+item+'.apk',"wb") as file:
+				for chunk in apk.iter_content(chunk_size=1024):
+					if chunk:
+						file.write(chunk)
+		except:
+			print "fail to write file"
 		print "finish download "+item
 		with open('./apkpure/'+keywd+'.txt','a+') as file:
 			file.write(item+'\n')
